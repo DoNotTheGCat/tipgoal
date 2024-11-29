@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Goal Widget</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #111; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
+
+        /* Conteneur principal avec un cadre dégradé orange */
+        .tip-widget { 
+            text-align: center; 
+            padding: 20px; 
+            background: #1c1c1c; 
+            border-radius: 20px; 
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); 
+            width: 80%; 
+            max-width: 600px; 
+            border: 5px solid; 
+            border-image: linear-gradient(to right, #FFE558, #FF8C00); /* Dégradé orange pour le bord */
+            border-image-slice: 1; 
+        }
+
+        /* Texte en dehors de la barre, en couleur orange */
+        .goal-text {
+            font-size: 18px;
+            color: #FF8C00; /* Couleur orange */
+            text-shadow: 0 0 10px #FFD700; /* Ombre lumineuse */
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.6); /* Fond semi-transparent pour lisibilité */
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* Barre de progression avec un dégradé orange */
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background: #333;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #FFE558, #FF8C00); /* Dégradé orange */
+            border-radius: 15px;
+            transition: width 1s ease;
+        }
+
+        /* Texte du montant atteint à l'intérieur de la barre */
+        .progress-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            color: #1c1c1c;
+            font-weight: bold;
+            text-shadow: 0 0 10px #FFD700;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="tip-widget">
+        <!-- Texte en dehors de la barre, avec fond semi-transparent -->
+        <div class="goal-text" id="goalText">Goal : Objectif | 0% | €0</div>
+        
+        <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar">
+                <div id="progressText" class="progress-text">€0</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAmount = 0, goalAmount = 500;
+        const goalName = "Objectif"; // Nom de l'objectif
+
+        function updateTipGoal(amount) {
+            currentAmount += amount;
+            if (currentAmount > goalAmount) currentAmount = goalAmount;
+
+            let progress = (currentAmount / goalAmount) * 100;
+            document.getElementById('progressText').textContent = `€${currentAmount}`;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Mise à jour du texte à l'extérieur de la barre
+            document.getElementById('goalText').textContent = `Goal : ${goalName} | ${Math.round(progress)}% | €${currentAmount}`;
+        }
+
+        setInterval(() => { if (currentAmount < goalAmount) updateTipGoal(10); }, 1000);
+    </script>
+</body>
+</html>
